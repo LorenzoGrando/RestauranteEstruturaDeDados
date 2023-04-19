@@ -47,6 +47,13 @@ public class Customer : MonoBehaviour
     void MoveToDecision() {
         transform.position = Vector2.MoveTowards(transform.position, targetDecisionPosition.position, speed * Time.deltaTime);
         if(transform.position == targetDecisionPosition.position) {
+            RequestManager requestRef = FindObjectOfType<RequestManager>();
+            MealStackInfo.PlateType requestType;
+            int rngDecision = Random.Range(1,3);
+            int rngSize = Random.Range(3,7);
+            requestType = (MealStackInfo.PlateType)rngDecision;
+            requestRef.requestsQueue.Enqueue(requestRef.CreateRequest("Request " + requestRef.requestsQueue.Count, 
+                                                                                                requestType, rngSize));
             madeDecision = true;
         }
     }

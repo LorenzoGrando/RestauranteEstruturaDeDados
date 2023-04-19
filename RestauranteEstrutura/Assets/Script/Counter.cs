@@ -5,19 +5,21 @@ using UnityEngine;
 public class Counter : MonoBehaviour
 {
     public bool isEmpty = true;
-    public PlateStack plate;
+    public GameObject plate;
 
 
-    void PlacePlate(PlateStack plateInput, Player originPlayer) {
+    public void PlacePlate(GameObject plateInput, Player originPlayer) {
         isEmpty = false;
         plate = plateInput;
-        originPlayer.heldPlate = null;
+        plate.transform.parent = transform;
+        plate.transform.position = transform.position;
+        originPlayer.heldItem = null;
     }
 
-    void RemovePlate(Player originPlayer) {
-        if(originPlayer.heldPlate == null) {
+    public void RemovePlate(Player originPlayer) {
+        if(originPlayer.heldItem == null) {
             isEmpty = true;
-            originPlayer.heldPlate = plate;
+            originPlayer.heldItem = plate;
             plate = null;
         }
     }

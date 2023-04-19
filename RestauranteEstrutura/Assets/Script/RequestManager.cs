@@ -28,21 +28,30 @@ public class RequestManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Q) && requestsQueue.Count != 0) {
             PlateStack oldestRequest = requestsQueue.Dequeue();
+            Debug.Log(oldestRequest.stackName);
+            /*
             Debug.Log("Oldest Request's List of Ingredients from Top to Bottom: ");
 
-            if(oldestRequest.iceCreamStack != null) {
-                for(int i = oldestRequest.iceCreamStack.Count; i > 0; i-- ) {
-                    Debug.Log(oldestRequest.iceCreamStack.Peek().ToString());
-                    oldestRequest.iceCreamStack.Pop();
+            if(oldestRequest.pilha.pilhaSorvete != null) {
+                for(int i = oldestRequest.pilha.pilhaSorvete.Length; i > 0; i-- ) {
+                    if(oldestRequest.pilha.ChecarTopoSorvete() == MealStackInfo.IceCreamFlavours.Null) {
+                        break;
+                    }
+                    Debug.Log(oldestRequest.pilha.ChecarTopoSorvete().ToString());
+                    oldestRequest.pilha.DesempilharSorvete();
                 }
             }
 
-            if(oldestRequest.hamburguerStack != null) {
-                for(int i = oldestRequest.hamburguerStack.Count; i > 0; i-- ) {
-                    Debug.Log(oldestRequest.hamburguerStack.Peek().ToString());
-                    oldestRequest.hamburguerStack.Pop();
+            if(oldestRequest.pilha.pilhaHamburguer != null) {
+                for(int i = oldestRequest.pilha.pilhaHamburguer.Length; i > 0; i-- ) {
+                    if(oldestRequest.pilha.ChecarTopoHamburguer() == MealStackInfo.HamburguerIngredient.Null) {
+                        break;
+                    }
+                    Debug.Log(oldestRequest.pilha.ChecarTopoHamburguer().ToString());
+                    oldestRequest.pilha.DesempilharHamburguer();
                 }
             }
+            */
         }
     }
 
@@ -52,7 +61,7 @@ public class RequestManager : MonoBehaviour
         for(int i = 0; i < requestSize; i++) {
             if(i != 0) {
                 var enumSize = Enum.GetNames(typeof(MealStackInfo.IceCreamFlavours));
-                int ingredientID = UnityEngine.Random.Range(1, enumSize.Length);
+                int ingredientID = UnityEngine.Random.Range(2, enumSize.Length);
                 requestFlavours[i] = (MealStackInfo.IceCreamFlavours)ingredientID;
             }
             else {
@@ -75,7 +84,7 @@ public class RequestManager : MonoBehaviour
             }
             else{
                 var enumSize = Enum.GetNames(typeof(MealStackInfo.HamburguerIngredient));
-                int ingredientID = UnityEngine.Random.Range(2, enumSize.Length);
+                int ingredientID = UnityEngine.Random.Range(3, enumSize.Length);
                 requestIngredients[i] = (MealStackInfo.HamburguerIngredient)ingredientID;
             }
         }
@@ -84,7 +93,7 @@ public class RequestManager : MonoBehaviour
     }
 
     public PlateStack CreateRequest(string requestName, MealStackInfo.PlateType requestType, int requestSize) {
-        PlateStack thisRequest = new PlateStack(requestName);
+        PlateStack thisRequest = new PlateStack(requestName, requestType);
         MealStackInfo.IceCreamFlavours[] iceFlavours = null;
         MealStackInfo.HamburguerIngredient[] hambIngredients = null;
 
@@ -98,13 +107,13 @@ public class RequestManager : MonoBehaviour
 
         if(iceFlavours != null){
             foreach(MealStackInfo.IceCreamFlavours ingredient in iceFlavours) {
-                thisRequest.iceCreamStack.Push(ingredient);
+                thisRequest.pilha.Empilhar(MealStackInfo.HamburguerIngredient.Null, ingredient);
             }
         }
         
         if(hambIngredients != null){
             foreach(MealStackInfo.HamburguerIngredient ingredient in hambIngredients) {
-                thisRequest.hamburguerStack.Push(ingredient);
+                thisRequest.pilha.Empilhar(ingredient, MealStackInfo.IceCreamFlavours.Null);
             }
         }
 
