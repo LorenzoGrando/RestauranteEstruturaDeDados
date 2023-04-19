@@ -29,7 +29,7 @@ public class RequestManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Q) && requestsQueue.Count != 0) {
             PlateStack oldestRequest = requestsQueue.Dequeue();
             Debug.Log(oldestRequest.stackName);
-            /*
+            
             Debug.Log("Oldest Request's List of Ingredients from Top to Bottom: ");
 
             if(oldestRequest.pilha.pilhaSorvete != null) {
@@ -51,7 +51,7 @@ public class RequestManager : MonoBehaviour
                     oldestRequest.pilha.DesempilharHamburguer();
                 }
             }
-            */
+            
         }
     }
 
