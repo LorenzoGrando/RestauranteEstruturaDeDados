@@ -52,7 +52,7 @@ public class Customer : MonoBehaviour
             int rngDecision = Random.Range(1,3);
             int rngSize = Random.Range(3,7);
             requestType = (MealStackInfo.PlateType)rngDecision;
-            requestRef.requestsQueue.Enqueue(requestRef.CreateRequest("Request " + requestRef.requestsQueue.Count, 
+            requestRef.requestsQueue.Inserir(requestRef.CreateRequest("Request " + requestRef.requestsQueue.Tamanho(), 
                                                                                                 requestType, rngSize));
             madeDecision = true;
         }

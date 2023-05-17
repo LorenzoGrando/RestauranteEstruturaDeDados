@@ -5,29 +5,29 @@ using System;
 
 public class RequestManager : MonoBehaviour
 {
-    public Queue<PlateStack> requestsQueue;
+    public Fila<PlateStack> requestsQueue;
     PlateStack newestRequest;
     public int requestSize;
 
     void Start()
     {
-        requestsQueue = new Queue<PlateStack>();
+        requestsQueue = new Fila<PlateStack>();
     }
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.I)) {
             newestRequest = CreateRequest("Request", MealStackInfo.PlateType.IceCream, requestSize);
-            requestsQueue.Enqueue(newestRequest);
+            requestsQueue.Inserir(newestRequest);
         }
 
         if(Input.GetKeyDown(KeyCode.H)) {
             newestRequest = CreateRequest("Request", MealStackInfo.PlateType.Hamburguer, requestSize);
-            requestsQueue.Enqueue(newestRequest);
+            requestsQueue.Inserir(newestRequest);
         }
 
 
-        if(Input.GetKeyDown(KeyCode.Q) && requestsQueue.Count != 0) {
-            PlateStack oldestRequest = requestsQueue.Dequeue();
+        if(Input.GetKeyDown(KeyCode.Q) && requestsQueue.Tamanho() != 0) {
+            PlateStack oldestRequest = requestsQueue.Remover();
             Debug.Log(oldestRequest.stackName);
             
             Debug.Log("Oldest Request's List of Ingredients from Top to Bottom: ");
