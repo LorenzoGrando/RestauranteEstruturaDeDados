@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Customer : MonoBehaviour
 {
@@ -12,6 +13,16 @@ public class Customer : MonoBehaviour
     bool isSeated;
     bool foundSeat;
     bool madeDecision;
+    public enum CustomerType {Null, Child, Adult, Elder};
+    public enum CustomerShape {Null, Square, Circle};
+    public enum CustomerColor {Null, Red, Blue};
+    public CustomerType myType;
+    public CustomerShape myShape;
+    public CustomerColor myColor;
+    public int customerHunger;
+    public Tree myDecisionTree;
+    public TextMeshProUGUI myTypeText;
+    public TextMeshProUGUI myHunger;
 
     void Start()
     {
@@ -47,14 +58,7 @@ public class Customer : MonoBehaviour
     void MoveToDecision() {
         transform.position = Vector2.MoveTowards(transform.position, targetDecisionPosition.position, speed * Time.deltaTime);
         if(transform.position == targetDecisionPosition.position) {
-            RequestManager requestRef = FindObjectOfType<RequestManager>();
-            MealStackInfo.PlateType requestType;
-            int rngDecision = Random.Range(1,3);
-            int rngSize = Random.Range(3,7);
-            requestType = (MealStackInfo.PlateType)rngDecision;
-            requestRef.requestsQueue.Inserir(requestRef.CreateRequest("Request " + requestRef.requestsQueue.Tamanho(), 
-                                                                                                requestType, rngSize));
-            madeDecision = true;
+            MakeDecision();
         }
     }
 
@@ -63,5 +67,27 @@ public class Customer : MonoBehaviour
         if(transform.position == (Vector3)targetSeatPosition){
             isSeated = true;
         }
+    }
+
+    void MakeDecision() {
+        Tree currentNode = myDecisionTree;
+        while(currentNode.leaf == false) {
+            if(currentNode.condition(myColor, myShape, myType, customerHunger) == false) {
+                currentNode = currentNode.optionFalse;
+            }
+            else {
+                currentNode = currentNode.optionTrue;
+            }
+        }
+        if(currentNode != null) {
+            MakeRequest(currentNode.returnPlateType, currentNode.returnRequestSize);
+        }
+    }
+
+    void MakeRequest(MealStackInfo.PlateType requestType, int requestSize) {
+        RequestManager requestRef = FindObjectOfType<RequestManager>();     
+        requestRef.requestsQueue.Inserir(requestRef.CreateRequest("Request " + requestRef.requestsQueue.Tamanho(), 
+                                                                                                requestType, requestSize));
+        madeDecision = true;
     }
 }

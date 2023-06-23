@@ -338,6 +338,14 @@ MonoBehaviour:
   customerSpawnPoint: {fileID: 1921993265}
   customerDecisionPoint: {fileID: 241010804}
   allCustomers: []
+  customerColors:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.10989809, b: 1, a: 1}
+  customerSprites:
+  - {fileID: 0}
+  - {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
 --- !u!4 &344068333
 Transform:
   m_ObjectHideFlags: 0
